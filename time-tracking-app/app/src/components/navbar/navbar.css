@@ -1,0 +1,33 @@
+.nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(47, 47, 126);
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.nav .login {
+  background-color: rgb(70, 70, 207);
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+.logout {
+  background-color: rgb(70, 70, 207);
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.logo {
+  text-decoration: none;
+  color: white;
+}

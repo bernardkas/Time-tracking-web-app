@@ -1,0 +1,83 @@
+/* login.css */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.login-form {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 5rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-form h1 {
+  font-size: 2rem;
+  text-align: center;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.box {
+  margin-bottom: 1rem;
+}
+
+.box label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.box input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.box input:focus {
+  outline: none;
+  border-color: #4c8bf5;
+}
+
+button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #4c8bf5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #357ae8;
+}
+
+.error {
+  color: #e74c3c;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* Additional Responsive Styling */
+@media (max-width: 500px) {
+  .login-form {
+    padding: 1.5rem;
+  }
+
+  .login-form h1 {
+    font-size: 1.5rem;
+  }
+}

@@ -1,0 +1,27 @@
+# Root
+.env
+.DS_Store
+npm-debug.log*
+yarn-error.log*
+*.log
+.vscode/
+
+# time-tracking-web (Next.js)
+time-tracking-web/.env
+time-tracking-web/.next/
+time-tracking-web/node_modules/
+time-tracking-web/out/
+time-tracking-web/.next/cache/
+time-tracking-web/.DS_Store
+
+# time-tracking-app (Electron)
+time-tracking-app/.env
+time-tracking-app/node_modules/
+time-tracking-app/dist/
+time-tracking-app/coverage/
+time-tracking-app/app/build/
+time-tracking-app/*.tsbuildinfo
+time-tracking-app/.DS_Store
+
+# Prisma (if used in either)
+**/prisma/migrations/

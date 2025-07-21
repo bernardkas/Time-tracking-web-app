@@ -1,0 +1,162 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  COMPANY
+  EMPLOYEE
+}
+
+enum SubscriptionPlan {
+  BASIC
+  PREMIUM
+  ENTERPRISE
+}
+
+model User {
+  id               String           @id @default(cuid())
+  name             String
+  email            String           @unique
+  password         String?
+  emailVerified    DateTime?
+  isOAuth          Boolean          @default(false)
+  image            String?
+  accounts         Account[]
+  role             UserRole         @default(COMPANY)
+  subscriptionType SubscriptionPlan @default(BASIC)
+  subscriptions    Subscription[]
+  profileCompleted Boolean          @default(false)
+
+  company  Company?
+  employee Employee?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Subscription {
+  id         String   @id @default(uuid())
+  userId     String
+  customerId String   @unique
+  status     String
+  priceId    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model VerificationToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model Company {
+  id          String       @id @default(cuid())
+  uuid        String       @unique @default(uuid())
+  name        String?
+  userId      String       @unique
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  employees   Employee[]
+  invitations Invitation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Invitation {
+  id        String   @id @default(cuid())
+  uuid      String   @unique @default(uuid())
+  email     String   @unique
+  companyId String
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum EmployeeStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
+enum IsOnline {
+  ONLINE
+  OFFLINE
+  PAUSED
+}
+
+model Employee {
+  id           String          @id @default(cuid())
+  uuid         String          @unique @default(uuid())
+  userId       String          @unique
+  name         String?
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyId    String?
+  company      Company?        @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  activityLogs ActivityLog[]
+  status       EmployeeStatus? @default(PENDING)
+  isOnline     IsOnline?       @default(OFFLINE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ActivityLog {
+  id             String   @id @default(cuid())
+  uuid           String   @unique @default(uuid())
+  employeeId     String
+  employee       Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  timestamp      DateTime @default(now())
+  screenshots    String[] @default([])
+  mouseClicks    Int?
+  keyboardClicks Int?
+  screenTime     Int?
+
+  createdAt DateTime @default(now())
+}
